@@ -11,9 +11,12 @@ import java.util.Date
 import scala.collection.mutable.Map
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.apache.log4j.Logger
+import scala.annotation.meta.beanGetter
+import javax.validation.constraints.{Min, NotNull}
+import org.hibernate.validator.constraints.NotEmpty
 
-class User(@JsonProperty("email")@BeanProperty var email: String, @JsonProperty("name")@BeanProperty var name: String,
-  @JsonProperty("password")@BeanProperty var password: String) {
+class User(@JsonProperty("email")@BeanProperty @(NotNull @beanGetter)@(NotEmpty @beanGetter) var email: String, @JsonProperty("name")@BeanProperty @(NotNull @beanGetter)@(NotEmpty @beanGetter) var name: String,
+  @JsonProperty("password")@BeanProperty  @(NotNull@beanGetter) @(NotEmpty @beanGetter)  var password: String) {
   @BeanProperty val user_id: Int = this.hashCode();
   @BeanProperty var created_at: String = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
   var updated_at: String = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());

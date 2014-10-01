@@ -16,14 +16,15 @@ import model.WebLogin
 import model.BankAccount
 import collection.JavaConverters._
 import org.apache.log4j.Logger
+import javax.validation.Valid
 
 @RestController
 class ApplicationController {
 
-    val logger = Logger.getLogger(getClass().getName());
+  val logger = Logger.getLogger(getClass().getName());
   //create user
   @RequestMapping(method = Array(RequestMethod.POST), value = Array("/users"))
-  def createUser(@RequestBody user: User): User = {
+  def createUser(@Valid @RequestBody user: User): User = {
 
     Database.addUser(user) // add the object user in the map
     Database.getUser(user.getUser_id) // return the user response converted to json
@@ -37,18 +38,18 @@ class ApplicationController {
 
   //update user
   @RequestMapping(method = Array(RequestMethod.PUT), value = Array("/users/{user_id}"))
-  def updateUser(@PathVariable user_id: Int, @RequestBody user: User): User = {
+  def updateUser(@PathVariable user_id: Int, @Valid @RequestBody user: User): User = {
     Database.updateUser(user_id, user)
   }
 
   //create the IDcard
   @RequestMapping(method = Array(RequestMethod.POST), value = Array("/users/{user_id}/idcards"))
-  def createIdCard(@PathVariable user_id: Int, @RequestBody id_card: IdCards): IdCards = {
+  def createIdCard(@PathVariable user_id: Int, @Valid @RequestBody id_card: IdCards): IdCards = {
     // first get the user of this particular user_id
     val u: User = Database.getUser(user_id)
     // add the idcard information to this user.
     u.addIdCard(id_card)
-       logger.info("Size1:"+ u.idCards.size)
+    logger.info("Size1:" + u.idCards.size)
     u.getIdCard(id_card.getCard_id)
   }
 
@@ -70,18 +71,18 @@ class ApplicationController {
 
   //create a web login
   @RequestMapping(method = Array(RequestMethod.POST), value = Array("/users/{user_id}/weblogins"))
-  def createWebLogin(@PathVariable user_id: Int, @RequestBody weblogin: WebLogin): WebLogin = {
+  def createWebLogin(@PathVariable user_id: Int, @Valid @RequestBody weblogin: WebLogin): WebLogin = {
     // first get the user of this particular user_id
     val u: User = Database.getUser(user_id)
     // add the web login information to this user.
     u.addWebLogin(weblogin)
     u.getWebLogin(weblogin.getLogin_id)
-    
+
   }
 
   //list all web login
   @RequestMapping(Array("users/{user_id}/weblogins"))
-  def viewWebLogins(@PathVariable user_id: Int): java.util.Map[Int,WebLogin] = {
+  def viewWebLogins(@PathVariable user_id: Int): java.util.Map[Int, WebLogin] = {
     val u: User = Database.getUser(user_id)
     u.viewallWebLogin().asJava
   }
@@ -94,7 +95,7 @@ class ApplicationController {
   }
   //create a bank account
   @RequestMapping(method = Array(RequestMethod.POST), value = Array("/users/{user_id}/bankaccounts"))
-  def createBankAccount(@PathVariable user_id: Int, @RequestBody bankAccount: BankAccount): BankAccount = {
+  def createBankAccount(@PathVariable user_id: Int, @Valid @RequestBody bankAccount: BankAccount): BankAccount = {
     // first get the user of this particular user_id
     val u: User = Database.getUser(user_id)
     // add the bank acc information to this user.
