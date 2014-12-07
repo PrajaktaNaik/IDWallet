@@ -19,7 +19,7 @@ class User(@JsonProperty("email")@BeanProperty @(NotNull @beanGetter)@(NotEmpty 
   @JsonProperty("password")@BeanProperty  @(NotNull@beanGetter) @(NotEmpty @beanGetter)  var password: String) {
   @BeanProperty val user_id: Int = this.hashCode();
   @BeanProperty var created_at: String = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
-  var updated_at: String = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
+  @BeanProperty var updated_at: String = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(new Date());
   var idCards = Map[Int, IdCards]()
   var webLogin = Map[Int, WebLogin]()
   var bankAccount = Map[Int, BankAccount]()
